@@ -23,6 +23,12 @@ import {
   MessageCircle
 } from 'lucide-react';
 import { motion, AnimatePresence, useInView, animate, useMotionValue, useTransform } from 'motion/react';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
+import MembersArea from './area-de-membros/MembersArea';
+import { LoginPage } from './area-de-membros/LoginPage';
+import { Dashboard } from './area-de-membros/Dashboard';
+import { CustomCursor } from './components/CustomCursor';
+import { BackRedirectPage } from './BackRedirectPage';
 
 const scrollToSection = (id: string) => {
   const element = document.getElementById(id);
@@ -183,7 +189,7 @@ const TopBanner = () => {
   );
 };
 
-const Navbar = () => {
+const Navbar = ({ onAccessMembersArea }: { onAccessMembersArea?: () => void }) => {
   const [scrolled, setScrolled] = React.useState(false);
 
   React.useEffect(() => {
@@ -217,6 +223,15 @@ const Navbar = () => {
               Dúvidas
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
             </button>
+            {onAccessMembersArea && (
+              <button
+                onClick={onAccessMembersArea}
+                className="text-[9px] font-black uppercase tracking-widest text-brand-yellow hover:text-white transition-colors relative group flex items-center gap-1.5"
+              >
+                <Users size={12} />
+                Área do Aluno
+              </button>
+            )}
           </div>
 
           {/* CTA */}
@@ -338,7 +353,7 @@ const Hero = () => (
           transition={{ delay: 0.5 }}
           className="flex flex-col items-center gap-6 w-full"
         >
-          <CTAButton 
+          <CTAButton
             onClick={() => scrollToSection('pricing')}
             className="w-full max-w-sm md:w-auto flex items-center justify-center gap-2 text-xl md:text-2xl py-6 md:px-12"
           >
@@ -1029,10 +1044,10 @@ const FinalCTA = () => {
           Pronto para mudar sua rotina educacional?
         </h2>
         <p className="text-lg md:text-xl text-blue-100 mb-10 max-w-3xl mx-auto font-medium">
-          Junte-se agora a milhares de professores que já descomplicaram suas vidas com o Geografia na Prática.
+          Junte-se agora a milhares de professores que já descomplicaram suas vidas com o GeoDinâmicas 650+.
         </p>
         <div className="flex flex-col items-center gap-8 w-full max-w-md mx-auto">
-          <CTAButton 
+          <CTAButton
             onClick={scrollToPricing}
             className="w-full text-2xl py-6 shadow-2xl shadow-blue-900/50"
           >
@@ -1091,29 +1106,77 @@ const WhatsAppButton = () => (
 
 export default function App() {
   const [showUpsell, setShowUpsell] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const navigate = useNavigate();
 
   // Expor função globalmente para simplificar o acesso de componentes profundos
   React.useEffect(() => {
     (window as any).showUpsellPopup = () => setShowUpsell(true);
-  }, []);
+    (window as any).goToMembersArea = () => navigate('/login');
+  }, [navigate]);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    navigate('/principal');
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    navigate('/login');
+  };
 
   return (
-    <div className="min-h-screen bg-white">
-      <TopBanner />
-      <Navbar />
-      <Hero />
-      <PainPoints />
-      <Benefits />
-      <Demonstration />
-      <Bonus />
-      <Scarcity />
-      <Pricing />
-      <Testimonials />
-      <Authority />
-      <FAQ />
-      <FinalCTA />
-      <WhatsAppButton />
-      <UpsellPopup isOpen={showUpsell} onClose={() => setShowUpsell(false)} />
-    </div>
+    <>
+      <CustomCursor />
+      <Routes>
+      {/* Landing Page Route */}
+      <Route path="/" element={
+        <div className="min-h-screen bg-white">
+          <TopBanner />
+          <Navbar onAccessMembersArea={() => navigate('/login')} />
+          <Hero />
+          <PainPoints />
+          <Benefits />
+          <Demonstration />
+          <Bonus />
+          <Scarcity />
+          <Pricing />
+          <Testimonials />
+          <Authority />
+          <FAQ />
+          <FinalCTA />
+          <WhatsAppButton />
+          <UpsellPopup isOpen={showUpsell} onClose={() => setShowUpsell(false)} />
+        </div>
+      } />
+
+      {/* Members Area Routes */}
+      <Route path="/login" element={
+        isLoggedIn ? <Navigate to="/principal" /> : <LoginPage onLogin={handleLogin} />
+      } />
+
+      {/* Protected Dashboard Routes */}
+      <Route path="/principal" element={
+        isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="principal" /> : <Navigate to="/login" />
+      } />
+      <Route path="/dinamicas" element={
+        isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="dinamicas" /> : <Navigate to="/login" />
+      } />
+      <Route path="/certificado" element={
+        isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="certificado" /> : <Navigate to="/login" />
+      } />
+      <Route path="/bonus" element={
+        isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="bonus" /> : <Navigate to="/login" />
+      } />
+      <Route path="/adicionais" element={
+        isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="adicionais" /> : <Navigate to="/login" />
+      } />
+
+      <Route path="/oferta-especial" element={<BackRedirectPage />} />
+      
+      {/* Fallback */}
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
+    </>
   );
 }
