@@ -588,31 +588,31 @@ const Bonus = () => (
             title: "100 Avaliações de Geografia",
             value: "R$ 47,00",
             desc: "Avaliações diagnósticas prontas, provas organizadas por bimestre e critérios de correção estruturados.",
-            image: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=800&auto=format&fit=crop"
+            image: "https://i.ibb.co/tTZm6yKn/image.png"
           },
           {
             title: "Guia Professor de Elite",
             value: "R$ 37,00",
             desc: "Metodologias ativas explicadas passo a passo para engajar qualquer turma do fundamental ao médio.",
-            image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=800&auto=format&fit=crop"
+            image: "https://i.ibb.co/7xdxvPMH/image.png"
           },
           {
             title: "Planos de Aula BNCC",
             value: "R$ 57,00",
             desc: "Planejamento completo para o ano todo, 100% alinhado às competências da BNCC.",
-            image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=800&auto=format&fit=crop"
+            image: "https://i.ibb.co/XrRfKLyT/image.png"
           },
           {
             title: "Planejamento Anual",
             value: "R$ 27,00",
             desc: "Calendário letivo estruturado por datas e temas, pronto para adaptar à sua escola.",
-            image: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=800&auto=format&fit=crop"
+            image: "https://i.ibb.co/FqdKRJ7x/image.png"
           },
           {
             title: "Mapas Premium em Alta",
             value: "R$ 39,00",
             desc: "Coleção exclusiva de mapas temáticos em alta definição para imprimir ou projetar.",
-            image: "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=800&auto=format&fit=crop"
+            image: "https://i.ibb.co/nqpFrq77/image.png"
           }
         ].map((bonus, index) => (
           <div key={index} className="flex flex-col w-full md:w-[calc(48%)] lg:w-[calc(31%)] bg-white/5 backdrop-blur-xl rounded-[2.5rem] overflow-hidden border border-white/10 group text-left shadow-2xl hover:border-brand-yellow/30 transition-all duration-500">
@@ -1129,54 +1129,54 @@ export default function App() {
     <>
       <CustomCursor />
       <Routes>
-      {/* Landing Page Route */}
-      <Route path="/" element={
-        <div className="min-h-screen bg-white">
-          <TopBanner />
-          <Navbar onAccessMembersArea={() => navigate('/login')} />
-          <Hero />
-          <PainPoints />
-          <Benefits />
-          <Demonstration />
-          <Bonus />
-          <Scarcity />
-          <Pricing />
-          <Testimonials />
-          <Authority />
-          <FAQ />
-          <FinalCTA />
-          <WhatsAppButton />
-          <UpsellPopup isOpen={showUpsell} onClose={() => setShowUpsell(false)} />
-        </div>
-      } />
+        {/* Landing Page Route */}
+        <Route path="/" element={
+          <div className="min-h-screen bg-white">
+            <TopBanner />
+            <Navbar onAccessMembersArea={() => navigate('/login')} />
+            <Hero />
+            <PainPoints />
+            <Benefits />
+            <Demonstration />
+            <Bonus />
+            <Scarcity />
+            <Pricing />
+            <Testimonials />
+            <Authority />
+            <FAQ />
+            <FinalCTA />
+            <WhatsAppButton />
+            <UpsellPopup isOpen={showUpsell} onClose={() => setShowUpsell(false)} />
+          </div>
+        } />
 
-      {/* Members Area Routes */}
-      <Route path="/login" element={
-        isLoggedIn ? <Navigate to="/principal" /> : <LoginPage onLogin={handleLogin} />
-      } />
+        {/* Members Area Routes */}
+        <Route path="/login" element={
+          isLoggedIn ? <Navigate to="/principal" /> : <LoginPage onLogin={handleLogin} />
+        } />
 
-      {/* Protected Dashboard Routes */}
-      <Route path="/principal" element={
-        isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="principal" /> : <Navigate to="/login" />
-      } />
-      <Route path="/dinamicas" element={
-        isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="dinamicas" /> : <Navigate to="/login" />
-      } />
-      <Route path="/certificado" element={
-        isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="certificado" /> : <Navigate to="/login" />
-      } />
-      <Route path="/bonus" element={
-        isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="bonus" /> : <Navigate to="/login" />
-      } />
-      <Route path="/adicionais" element={
-        isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="adicionais" /> : <Navigate to="/login" />
-      } />
+        {/* Protected Dashboard Routes */}
+        <Route path="/principal" element={
+          isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="principal" /> : <Navigate to="/login" />
+        } />
+        <Route path="/dinamicas" element={
+          isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="dinamicas" /> : <Navigate to="/login" />
+        } />
+        <Route path="/certificado" element={
+          isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="certificado" /> : <Navigate to="/login" />
+        } />
+        <Route path="/bonus" element={
+          isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="bonus" /> : <Navigate to="/login" />
+        } />
+        <Route path="/adicionais" element={
+          isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="adicionais" /> : <Navigate to="/login" />
+        } />
 
-      <Route path="/oferta-especial" element={<BackRedirectPage />} />
-      
-      {/* Fallback */}
-      <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
+        <Route path="/oferta-especial" element={<BackRedirectPage />} />
+
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
     </>
   );
 }

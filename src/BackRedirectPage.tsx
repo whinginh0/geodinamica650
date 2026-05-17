@@ -78,13 +78,13 @@ export const BackRedirectPage = () => {
           >
             <div className="absolute top-0 left-0 w-full h-2 bg-slate-200"></div>
             <div className="mb-8">
-              <h3 className="text-xl font-black text-slate-400 uppercase tracking-widest mb-2">PLANO BÁSICO</h3>
-              <p className="text-slate-400 line-through font-bold text-sm mb-1">De R$ 19,90 por</p>
+              <h3 className="text-lg md:text-xl font-black text-slate-400 uppercase tracking-widest mb-4">PLANO BÁSICO</h3>
+              <p className="text-slate-400 font-bold text-[10px] uppercase mb-1">Pagamento Único</p>
               <div className="flex items-start gap-1">
-                <span className="text-xl font-black text-slate-900 mt-2">R$</span>
-                <span className="text-7xl font-black text-slate-900 tracking-tighter leading-none">7,90</span>
-                <div className="flex flex-col items-start mt-2">
-                  <span className="text-xl font-black text-slate-900 leading-none">,90</span>
+                <span className="text-lg md:text-xl font-black text-slate-900 mt-2">R$</span>
+                <span className="text-7xl md:text-8xl font-black text-slate-900 tracking-tighter leading-none">7</span>
+                <div className="flex flex-col items-start mt-3">
+                  <span className="text-xl md:text-2xl font-black text-slate-900 leading-none">,90</span>
                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">ÚNICA VEZ</span>
                 </div>
               </div>
@@ -123,17 +123,22 @@ export const BackRedirectPage = () => {
               O MAIS ESCOLHIDO
             </div>
             
-            <div className="mb-8 mt-4">
-              <h3 className="text-xl font-black text-brand-blue uppercase tracking-widest mb-2">PLANO PREMIUM</h3>
-              <p className="text-slate-300 line-through font-bold text-sm mb-1">De R$ 27,90 por</p>
+            <div className="mb-8 mt-4 flex flex-col items-center">
+              <h3 className="text-2xl md:text-4xl font-black mb-4 text-brand-blue uppercase tracking-widest text-center">PLANO PREMIUM</h3>
+              <p className="text-slate-300 line-through font-bold text-sm md:text-base mb-1">De R$ 27,90 por</p>
               <div className="flex items-start gap-1">
-                <span className="text-xl font-black text-brand-blue mt-2">R$</span>
-                <span className="text-7xl font-black text-brand-blue tracking-tighter leading-none">15</span>
-                <div className="flex flex-col items-start mt-2">
-                  <span className="text-xl font-black text-brand-blue leading-none">,90</span>
-                  <span className="text-[10px] font-black text-brand-green uppercase tracking-tighter animate-pulse">VITALÍCIO</span>
+                <span className="text-xl md:text-2xl font-black text-brand-blue mt-2 md:mt-3">R$</span>
+                <span className="text-8xl md:text-9xl font-black text-brand-blue tracking-tighter leading-none">15</span>
+                <div className="flex flex-col items-start mt-3 md:mt-5">
+                  <span className="text-2xl md:text-3xl font-black text-brand-blue leading-none">,90</span>
+                  <span className="text-[12px] md:text-[14px] font-black text-brand-green uppercase tracking-tighter animate-pulse">VITALÍCIO</span>
                 </div>
               </div>
+            </div>
+
+            {/* Product Mockup Image */}
+            <div className="my-1 relative flex items-center justify-center h-40 md:h-48">
+              <img src="https://i.ibb.co/NndnrgrG/image-Photoroom.png" alt="Premium Pack" className="w-48 h-48 md:w-60 md:h-60 object-contain drop-shadow-2xl z-20" />
             </div>
 
             <ul className="space-y-4 mb-8 flex-1">

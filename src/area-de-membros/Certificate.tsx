@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion } from 'motion/react';
-import { Download, Award, ShieldCheck, Check } from 'lucide-react';
+import { Award, ShieldCheck, Check } from 'lucide-react';
 
 interface CertificateProps {
   userName: string;
@@ -9,10 +9,6 @@ interface CertificateProps {
 
 export const Certificate: React.FC<CertificateProps> = ({ userName, completionDate }) => {
   const certificateRef = useRef<HTMLDivElement>(null);
-
-  const handleDownload = () => {
-    alert('Preparando seu certificado para download...');
-  };
 
   const handlePrint = () => {
     window.print();
@@ -35,12 +31,6 @@ export const Certificate: React.FC<CertificateProps> = ({ userName, completionDa
               className="bg-slate-900 text-white px-8 py-4 rounded-2xl font-black flex items-center gap-2 hover:scale-105 transition-all shadow-lg"
             >
               IMPRIMIR
-            </button>
-            <button
-              onClick={handleDownload}
-              className="bg-brand-blue text-white px-8 py-4 rounded-2xl font-black flex items-center gap-2 hover:scale-105 transition-all shadow-lg shadow-blue-500/20"
-            >
-              <Download size={20} /> BAIXAR PDF
             </button>
           </div>
         </div>

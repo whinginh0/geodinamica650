@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  LayoutDashboard, 
-  BookOpen, 
-  Award, 
-  Gift, 
-  PlusCircle, 
-  LogOut, 
-  Download, 
+import {
+  LayoutDashboard,
+  BookOpen,
+  Award,
+  Gift,
+  PlusCircle,
+  LogOut,
+  Download,
   ExternalLink,
   ChevronRight,
   Star,
@@ -46,7 +46,7 @@ const PDFModal = ({ isOpen, onClose, title, pdfUrl }: { isOpen: boolean, onClose
               </div>
               <h3 className="text-xl font-black text-slate-900">{title}</h3>
             </div>
-            <button 
+            <button
               onClick={onClose}
               className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400 hover:text-slate-600"
             >
@@ -54,14 +54,14 @@ const PDFModal = ({ isOpen, onClose, title, pdfUrl }: { isOpen: boolean, onClose
             </button>
           </div>
           <div className="flex-1 bg-slate-100 p-4 overflow-hidden">
-            <iframe 
-              src={`${pdfUrl}#toolbar=0`} 
+            <iframe
+              src={`${pdfUrl}#toolbar=0`}
               className="w-full h-full rounded-xl border-none shadow-inner"
               title={title}
             />
           </div>
           <div className="p-4 bg-slate-50 flex justify-end gap-4">
-            <button 
+            <button
               onClick={onClose}
               className="px-6 py-2 rounded-xl font-bold text-slate-500 hover:text-slate-700 transition-colors"
             >
@@ -107,31 +107,27 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
     { id: 'adicionais', label: 'Adicionais', icon: PlusCircle },
   ];
 
-  const dinamicasItems = [
-    "Geografia Física - 150 Atividades",
-    "Geografia Humana - 120 Atividades",
-    "Cartografia e Mapas - 100 Atividades",
-    "Geopolítica e Atualidades - 80 Atividades",
-    "Meio Ambiente - 100 Atividades",
-    "Demografia e População - 100 Atividades"
-  ];
+  const dinamicasItems: string[] = ["GeoDinâmicas 650+ – Atividades Interativas de Geografia"];
 
-  const bonusItems = [
-    "100 Avaliações de Geografia",
-    "Guia Professor de Elite",
-    "Planos de Aula BNCC",
-    "Mapas Premium em Alta Resolução"
+  const bonusItems: string[] = [
+    "100 Avaliações de Geografia – Diagnósticas, Bimestrais e Práticas (Alinhadas à BNCC)",
+    "Guia Professor de Elite – Metodologias Ativas para Aulas de Geografia (Alinhado à BNCC)",
+    "Planos de Aula BNCC – Planejamento Completo de Geografia para o Ano Letivo",
+    "Planejamento Anual de Geografia – Calendário Letivo Estruturado e Alinhado à BNCC",
+    "Mapas Premium em Alta – Coleção Completa de Mapas de Geografia (Alta Definição)"
   ];
 
   const allRequiredItems = [...dinamicasItems, ...bonusItems];
-  const progressPercent = Math.round((completedItems.length / allRequiredItems.length) * 100);
+  const progressPercent = allRequiredItems.length > 0
+    ? Math.round((completedItems.length / allRequiredItems.length) * 100)
+    : 0;
 
   const toggleComplete = (title: string) => {
     if (completedItems.includes(title)) {
       setCompletedItems(prev => prev.filter(item => item !== title));
     } else {
       setCompletedItems(prev => [...prev, title]);
-      
+
       // Celebration!
       confetti({
         particleCount: 150,
@@ -150,14 +146,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
             <AnimatePresence>
               {isPromoModalOpen && (
                 <div className="fixed inset-0 w-screen h-screen z-[300] flex items-center justify-center p-4">
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     className="absolute inset-0 bg-slate-900/60 backdrop-blur-[5px]"
                     onClick={closePromo}
                   />
-                  <motion.div 
+                  <motion.div
                     initial={{ scale: 0.9, opacity: 0, y: 20 }}
                     animate={{ scale: 1, opacity: 1, y: 0 }}
                     exit={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -167,14 +163,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
                     <div className="inline-block bg-brand-yellow text-blue-900 px-4 py-1 rounded-full font-black text-[9px] md:text-[10px] uppercase tracking-widest mb-4">
                       OFERTA ÚNICA E EXCLUSIVA
                     </div>
-                    
+
                     <h2 className="text-xl md:text-2xl font-black text-slate-900 mb-3 leading-tight uppercase">Turbine Suas Aulas!</h2>
                     <p className="text-slate-500 font-bold text-xs md:text-sm mb-6 leading-relaxed px-2">
                       Sabia que você pode adicionar materiais extras exclusivos como o <span className="text-brand-blue font-black">Pack Gospel</span> e <span className="text-brand-blue font-bold">Educação Inclusiva</span> à sua biblioteca?
                     </p>
-                    
+
                     <div className="flex flex-col gap-3">
-                      <button 
+                      <button
                         onClick={() => {
                           closePromo();
                           navigate('/dinamicas');
@@ -183,7 +179,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
                       >
                         ACESSAR DINÂMICAS <ChevronRight size={18} />
                       </button>
-                      <button 
+                      <button
                         onClick={() => {
                           closePromo();
                           navigate('/adicionais');
@@ -215,7 +211,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
                 </div>
               </div>
               <div className="absolute right-0 bottom-0 opacity-20 pointer-events-none translate-x-10 translate-y-10">
-                 <img src="https://i.ibb.co/Cp70DWgL/image.png" alt="Planet" className="w-80 h-80" />
+                <img src="https://i.ibb.co/Cp70DWgL/image.png" alt="Planet" className="w-80 h-80" />
               </div>
             </div>
 
@@ -230,7 +226,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
                   <p className="text-slate-500 text-sm font-medium">Explore materiais extras para potencializar suas aulas.</p>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={() => navigate('/adicionais')}
                 className="bg-brand-blue text-white px-8 py-3 rounded-xl font-black text-xs uppercase tracking-wider hover:scale-105 transition-all shadow-lg shadow-blue-500/20 whitespace-nowrap"
               >
@@ -249,7 +245,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
                   ACESSAR AGORA <ChevronRight size={18} />
                 </button>
               </div>
-              
+
               <div className="bg-white p-8 rounded-[2rem] shadow-xl border border-slate-100 flex flex-col items-center text-center">
                 <div className="w-16 h-16 bg-yellow-50 text-brand-yellow rounded-2xl flex items-center justify-center mb-6">
                   <Award size={32} />
@@ -291,13 +287,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { title: "Geografia Física - 150 Atividades", items: "150 PDFs", color: "blue", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", banner: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=800&auto=format&fit=crop" },
-                { title: "Geografia Humana - 120 Atividades", items: "120 PDFs", color: "green", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", banner: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=800&auto=format&fit=crop" },
-                { title: "Cartografia e Mapas - 100 Atividades", items: "100 PDFs", color: "yellow", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", banner: "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=800&auto=format&fit=crop" },
-                { title: "Geopolítica e Atualidades - 80 Atividades", items: "80 PDFs", color: "blue", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", banner: "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?q=80&w=800&auto=format&fit=crop" },
-                { title: "Meio Ambiente - 100 Atividades", items: "100 PDFs", color: "green", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", banner: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=800&auto=format&fit=crop" },
-                { title: "Demografia e População - 100 Atividades", items: "100 PDFs", color: "yellow", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", banner: "https://images.unsplash.com/photo-1464817739973-0128fe77aaa1?q=80&w=800&auto=format&fit=crop" },
-              ].map((item, i) => (
+                {
+                  title: "GeoDinâmicas 650+ – Atividades Interativas de Geografia",
+                  items: "650+ Atividades",
+                  color: "blue",
+                  url: "/GeoDinamicas_650plus.pdf",
+                  banner: "https://i.ibb.co/99Lj2WM1/image.png"
+                },
+              ].map((item: any, i) => (
+
                 <div key={i} className="bg-white rounded-[2rem] overflow-hidden shadow-lg border border-slate-100 group hover:border-brand-blue/30 transition-all flex flex-col h-full">
                   {/* Card Banner */}
                   <div className="relative h-40 overflow-hidden">
@@ -319,17 +317,16 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
                         )}
                       </div>
                       <div className="flex gap-2">
-                        <button 
+                        <button
                           onClick={() => toggleComplete(item.title)}
-                          className={`p-2.5 rounded-xl transition-all border ${
-                            completedItems.includes(item.title)
+                          className={`p-2.5 rounded-xl transition-all border ${completedItems.includes(item.title)
                               ? 'bg-brand-green/10 border-brand-green text-brand-green'
                               : 'bg-slate-50 border-slate-100 text-slate-400 hover:text-brand-green hover:border-brand-green'
-                          }`}
+                            }`}
                         >
                           <CheckCircle2 size={18} />
                         </button>
-                        <button 
+                        <button
                           onClick={() => {
                             setSelectedPdf({ title: item.title, url: item.url });
                             setIsPdfModalOpen(true);
@@ -350,7 +347,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
         if (userPlan === 'premium' && progressPercent < 100) {
           return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-6">
-              <motion.div 
+              <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 className="w-24 h-24 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mb-8 relative"
@@ -360,7 +357,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
                   <Zap size={20} />
                 </div>
               </motion.div>
-              
+
               <h2 className="text-3xl font-black text-slate-900 mb-4">Certificado Bloqueado</h2>
               <p className="text-slate-500 font-medium max-w-md mx-auto mb-10">
                 Você precisa concluir todos os conteúdos de Dinâmicas e Bônus para emitir seu certificado de 40 horas.
@@ -372,7 +369,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
                   <span className="text-2xl font-black text-brand-blue">{progressPercent}%</span>
                 </div>
                 <div className="w-full h-4 bg-slate-100 rounded-full overflow-hidden">
-                  <motion.div 
+                  <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${progressPercent}%` }}
                     className="h-full bg-brand-gradient"
@@ -383,7 +380,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
                 </p>
               </div>
 
-              <button 
+              <button
                 onClick={() => navigate('/dinamicas')}
                 className="mt-12 bg-brand-blue text-white px-10 py-4 rounded-2xl font-black shadow-lg shadow-blue-500/20 hover:scale-105 transition-all"
               >
@@ -402,11 +399,42 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { title: "100 Avaliações de Geografia", desc: "Avaliações diagnósticas prontas para imprimir.", color: "blue", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", banner: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=800&auto=format&fit=crop" },
-                { title: "Guia Professor de Elite", desc: "Metodologias ativas para engajar qualquer turma.", color: "green", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", banner: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=800&auto=format&fit=crop" },
-                { title: "Planos de Aula BNCC", desc: "Planejamento completo alinhado à BNCC.", color: "yellow", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", banner: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=800&auto=format&fit=crop" },
-                { title: "Mapas Premium em Alta Resolução", desc: "Coleção exclusiva de mapas temáticos.", color: "blue", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", banner: "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=800&auto=format&fit=crop" },
-              ].map((bonus, i) => (
+                {
+                  title: "100 Avaliações de Geografia – Diagnósticas, Bimestrais e Práticas (Alinhadas à BNCC)",
+                  desc: "Avaliações prontas para imprimir, organizadas por nível e tema.",
+                  color: "blue",
+                  url: "/100_Avaliacoes_Geografia_BNCC_nova_capa (1).pdf",
+                  banner: "https://i.ibb.co/tTZm6yKn/image.png"
+                },
+                {
+                  title: "Guia Professor de Elite – Metodologias Ativas para Aulas de Geografia (Alinhado à BNCC)",
+                  desc: "Domine as metodologias ativas e engaje seus alunos como nunca.",
+                  color: "green",
+                  url: "/Guia_Professor_Elite_Metodologias_Ativas_Geografia (1).pdf",
+                  banner: "https://i.ibb.co/7xdxvPMH/image.png"
+                },
+                {
+                  title: "Planos de Aula BNCC – Planejamento Completo de Geografia para o Ano Letivo",
+                  desc: "Planejamento completo para o ano todo, 100% alinhado às competências da BNCC.",
+                  color: "yellow",
+                  url: "/Planos_de_Aula_BNCC_Geografia.pdf",
+                  banner: "https://i.ibb.co/XrRfKLyT/image.png"
+                },
+                {
+                  title: "Planejamento Anual de Geografia – Calendário Letivo Estruturado e Alinhado à BNCC",
+                  desc: "Calendário letivo estruturado por datas e temas, pronto para adaptar à sua escola.",
+                  color: "blue",
+                  url: "/Planejamento_Anual_Geografia_BNCC.pdf",
+                  banner: "https://i.ibb.co/FqdKRJ7x/image.png"
+                },
+                {
+                  title: "Mapas Premium em Alta – Coleção Completa de Mapas de Geografia (Alta Definição)",
+                  desc: "Coleção exclusiva de mapas temáticos em alta definição para imprimir ou projetar.",
+                  color: "yellow",
+                  url: "/Mapas_Premium_em_Alta_GeoDinamicas.pdf",
+                  banner: "https://i.ibb.co/nqpFrq77/image.png"
+                },
+              ].map((bonus: any, i) => (
                 <div key={i} className="bg-white rounded-[2rem] overflow-hidden shadow-lg border border-slate-100 group hover:border-brand-green/30 transition-all flex flex-col h-full">
                   {/* Card Banner */}
                   <div className="relative h-40 overflow-hidden">
@@ -430,13 +458,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
                         )}
                       </div>
                       <div className="flex gap-2">
-                        <button 
+                        <button
                           onClick={() => toggleComplete(bonus.title)}
-                          className={`p-2.5 rounded-xl transition-all border ${
-                            completedItems.includes(bonus.title)
+                          className={`p-2.5 rounded-xl transition-all border ${completedItems.includes(bonus.title)
                               ? 'bg-brand-green/10 border-brand-green text-brand-green'
                               : 'bg-slate-50 border-slate-100 text-slate-400 hover:text-brand-green hover:border-brand-green'
-                          }`}
+                            }`}
                         >
                           <CheckCircle2 size={18} />
                         </button>
@@ -466,26 +493,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                {
-                  title: "Pack Gospel Kids",
-                  desc: "Dinâmicas e coreografias cristãs para crianças.",
-                  price: "R$ 19,90",
-                  banner: "https://i.ibb.co/9H1Vf5pW/pack-gospel.png",
-                  gradient: "from-purple-600 to-pink-500",
-                  badge: "NOVO",
-                  url: "#"
-                },
-                {
-                  title: "Educação Inclusiva",
-                  desc: "Adaptações pedagógicas para alunos com TEA/TDAH.",
-                  price: "R$ 29,90",
-                  banner: "https://images.unsplash.com/photo-1544928147-79a2dbc1f389?q=80&w=800&auto=format&fit=crop",
-                  gradient: "from-teal-500 to-emerald-400",
-                  badge: "POPULAR",
-                  url: "#"
-                },
-              ].map((item, i) => (
+              {[].map((item: any, i) => (
                 <div key={i} className="bg-white rounded-[2rem] overflow-hidden shadow-xl border border-slate-100 group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
                   <div className="relative h-48 overflow-hidden">
                     <img src={item.banner} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
@@ -540,11 +548,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
             <button
               key={tab.id}
               onClick={() => navigate(`/${tab.id}`)}
-              className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-black text-sm uppercase tracking-wider transition-all ${
-                activeTab === tab.id 
-                  ? 'bg-brand-blue text-white shadow-lg shadow-blue-500/20 translate-x-2' 
+              className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-black text-sm uppercase tracking-wider transition-all ${activeTab === tab.id
+                  ? 'bg-brand-blue text-white shadow-lg shadow-blue-500/20 translate-x-2'
                   : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
-              }`}
+                }`}
             >
               <tab.icon size={20} />
               {tab.label}
@@ -552,7 +559,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
           ))}
         </nav>
 
-        <button 
+        <button
           onClick={onLogout}
           className="flex items-center gap-4 px-6 py-4 rounded-2xl font-black text-sm uppercase tracking-wider text-red-400 hover:text-red-500 hover:bg-red-50 transition-all mt-auto"
         >
@@ -565,15 +572,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
       <header className="md:hidden bg-white/80 backdrop-blur-md border-b border-slate-200 p-4 sticky top-0 z-[100] no-print">
         <div className="flex items-center justify-between">
           <img src="https://i.ibb.co/m5GppDf3/image.png" alt="Logo" className="h-20 w-auto object-contain scale-110 origin-left" />
-          
+
           <div className="flex items-center gap-3">
             {/* Mobile Menu Toggle */}
             <div className="relative">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
-                  isMobileMenuOpen ? 'bg-slate-900 rotate-90' : 'bg-brand-blue shadow-lg shadow-blue-500/20'
-                } text-white`}
+                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${isMobileMenuOpen ? 'bg-slate-900 rotate-90' : 'bg-brand-blue shadow-lg shadow-blue-500/20'
+                  } text-white`}
               >
                 {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
@@ -582,15 +588,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
                 {isMobileMenuOpen && (
                   <>
                     {/* Overlay to close menu */}
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       onClick={() => setIsMobileMenuOpen(false)}
                       className="fixed inset-0 bg-slate-900/20 backdrop-blur-[2px] z-[-1]"
                     />
-                    
-                    <motion.div 
+
+                    <motion.div
                       initial={{ opacity: 0, scale: 0.9, y: -20 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.9, y: -20 }}
@@ -606,11 +612,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
                             navigate(`/${tab.id}`);
                             setIsMobileMenuOpen(false);
                           }}
-                          className={`w-full flex items-center justify-between gap-4 px-5 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl transition-all ${
-                            activeTab === tab.id
+                          className={`w-full flex items-center justify-between gap-4 px-5 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl transition-all ${activeTab === tab.id
                               ? 'bg-brand-blue text-white'
                               : 'bg-white text-slate-600 border border-slate-100'
-                          }`}
+                            }`}
                         >
                           {tab.label}
                           <tab.icon size={14} />
@@ -647,9 +652,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
       </main>
 
       <div className="no-print">
-        <PDFModal 
-          isOpen={isPdfModalOpen} 
-          onClose={() => setIsPdfModalOpen(false)} 
+        <PDFModal
+          isOpen={isPdfModalOpen}
+          onClose={() => setIsPdfModalOpen(false)}
           title={selectedPdf.title}
           pdfUrl={selectedPdf.url}
         />
