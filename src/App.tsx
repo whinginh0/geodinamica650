@@ -733,11 +733,13 @@ const Pricing = () => (
 
           <ul className="space-y-2.5 md:space-y-3 mb-6 w-full text-left px-2">
             {[
-              "200 Atividades em PDF",
-              "+100 Dinâmicas Poderosas",
-              "Gabaritos Inclusos",
-              "Acesso por 12 meses",
-              "Suporte Digital"
+              "Mais de 650 Dinâmicas Interativas em PDF",
+              "Acesso Vitalício",
+              "Área de Membros Exclusiva",
+              "Materiais em PDF Prontos para Imprimir e Aplicar",
+              "Conteúdos Organizados e Alinhados à BNCC",
+              "Garantia Incondicional de 7 Dias",
+              "Suporte Especializado"
             ].map((f, i) => (
               <li key={i} className="flex items-center gap-3 text-slate-600 font-bold text-[13px] md:text-sm">
                 <div className="w-4 h-4 md:w-5 md:h-5 rounded-full bg-slate-100 flex items-center justify-center">
@@ -785,18 +787,23 @@ const Pricing = () => (
 
             <ul className="space-y-2.5 md:space-y-3 mb-6 w-full text-left px-2">
               {[
-                "Todas as 500+ Dinâmicas",
-                "+100 Dinâmicas Poderosas",
-                "Acesso Vitalício (Sem taxas)",
-                "Arquivos Editáveis (Canva)",
-                "Bônus: 50 Mapas HD",
-                "Bônus: Planner de Aulas",
-                "Suporte VIP Prioritário",
-                "Certificado de Conclusão"
+                "Tudo do Plano Básico",
+                "Acesso Vitalício + Atualizações Mensais",
+                "Suporte Premium",
+                "Certificado de Conclusão",
+                "100 Avaliações de Geografia Bônus",
+                "Guia Professor de Elite Bônus",
+                "Planos de Aula Alinhados à BNCC Bônus",
+                "Planejamento Anual Bônus",
+                "Mapas Premium em Alta Qualidade Bônus"
               ].map((f, i) => (
                 <li key={i} className="flex items-center gap-3 text-slate-900 font-black text-[13px] md:text-sm">
                   <div className="w-4 h-4 md:w-5 md:h-5 rounded-full bg-brand-green flex items-center justify-center shadow-lg shadow-brand-green/20">
-                    <Check size={10} className="text-white" strokeWidth={4} />
+                    {f.includes("Bônus") ? (
+                      <Gift size={10} className="text-white" strokeWidth={3} />
+                    ) : (
+                      <Check size={10} className="text-white" strokeWidth={4} />
+                    )}
                   </div>
                   {f}
                 </li>
@@ -1104,7 +1111,66 @@ const WhatsAppButton = () => (
 
 
 
+const useAntiClone = () => {
+  React.useEffect(() => {
+    // 1. Previne clique direito (context menu)
+    const handleContextMenu = (e: Event) => e.preventDefault();
+    document.addEventListener('contextmenu', handleContextMenu);
+
+    // 2. Previne atalhos de teclado (F12, Ctrl+U, Ctrl+Shift+I, etc)
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) ||
+        (e.ctrlKey && ['U', 'S', 'P', 'C'].includes(e.key.toUpperCase()))
+      ) {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+
+    // 3. Previne seleção de texto (exceto em inputs)
+    const handleSelectStart = (e: Event) => {
+      const target = e.target as HTMLElement;
+      if (target && !['INPUT', 'TEXTAREA'].includes(target.tagName)) {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener('selectstart', handleSelectStart);
+
+    // 4. Previne arrastar elementos (imagens)
+    const handleDragStart = (e: Event) => {
+      const target = e.target as HTMLElement;
+      if (target && !['INPUT', 'TEXTAREA'].includes(target.tagName)) {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener('dragstart', handleDragStart);
+
+    // 5. Desabilita seleção via CSS
+    document.body.style.userSelect = 'none';
+    document.body.style.webkitUserSelect = 'none';
+
+    // 6. Deteccao de protocolo local (anti HTTrack e SaveWebZip)
+    if (window.location.protocol === 'file:' || window.location.protocol === 'data:') {
+      document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#111;color:red;font-family:sans-serif;text-align:center;"><h1>Acesso Negado.<br>Este site possui proteções ativas contra cópias.</h1></div>';
+      window.location.href = 'about:blank';
+    }
+
+    return () => {
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('selectstart', handleSelectStart);
+      document.removeEventListener('dragstart', handleDragStart);
+      document.body.style.userSelect = '';
+      document.body.style.webkitUserSelect = '';
+    };
+  }, []);
+};
+
 export default function App() {
+  useAntiClone(); // Ativa as proteções no site inteiro
+
   const [showUpsell, setShowUpsell] = React.useState(false);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const navigate = useNavigate();

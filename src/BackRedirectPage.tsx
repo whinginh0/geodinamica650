@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Check, ArrowRight, ShieldCheck, Clock, Zap, Star } from 'lucide-react';
+import { Check, ArrowRight, ShieldCheck, Clock, Zap, Star, Gift } from 'lucide-react';
 
 const CTAButton = ({ children, className = "", primary = true, onClick }: { children: React.ReactNode, className?: string, primary?: boolean, onClick?: () => void }) => (
   <motion.button
@@ -91,7 +91,15 @@ export const BackRedirectPage = () => {
             </div>
 
             <ul className="space-y-4 mb-8 flex-1">
-              {["Todas as 650+ Dinâmicas", "Acesso por 1 Ano", "Materiais em PDF", "Suporte Padrão"].map((f, i) => (
+              {[
+                "Mais de 650 Dinâmicas Interativas em PDF",
+                "Acesso Vitalício",
+                "Área de Membros Exclusiva",
+                "Materiais em PDF Prontos para Imprimir e Aplicar",
+                "Conteúdos Organizados e Alinhados à BNCC",
+                "Garantia Incondicional de 7 Dias",
+                "Suporte Especializado"
+              ].map((f, i) => (
                 <li key={i} className="flex items-center gap-3 text-slate-600 font-bold text-sm">
                   <Check size={18} className="text-brand-green" strokeWidth={3} />
                   {f}
@@ -143,17 +151,23 @@ export const BackRedirectPage = () => {
 
             <ul className="space-y-4 mb-8 flex-1">
               {[
-                "Todas as 650+ Dinâmicas", 
-                "+100 Dinâmicas Poderosas",
-                "Acesso Vitalício", 
-                "Arquivos Editáveis (Canva)",
-                "Todos os Bônus Inclusos",
-                "Certificado de 40 Horas",
-                "Suporte VIP WhatsApp"
+                "Tudo do Plano Básico",
+                "Acesso Vitalício + Atualizações Mensais",
+                "Suporte Premium",
+                "Certificado de Conclusão",
+                "100 Avaliações de Geografia Bônus",
+                "Guia Professor de Elite Bônus",
+                "Planos de Aula Alinhados à BNCC Bônus",
+                "Planejamento Anual Bônus",
+                "Mapas Premium em Alta Qualidade Bônus"
               ].map((f, i) => (
                 <li key={i} className="flex items-center gap-3 text-slate-900 font-black text-sm">
                   <div className="w-5 h-5 rounded-full bg-brand-green flex items-center justify-center">
-                    <Check size={12} className="text-white" strokeWidth={4} />
+                    {f.includes("Bônus") ? (
+                      <Gift size={12} className="text-white" strokeWidth={3} />
+                    ) : (
+                      <Check size={12} className="text-white" strokeWidth={4} />
+                    )}
                   </div>
                   {f}
                 </li>
