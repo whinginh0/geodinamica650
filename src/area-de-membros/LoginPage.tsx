@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Mail, Lock, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Mail, Lock, ArrowRight, ShieldCheck, AlertCircle } from 'lucide-react';
+import { supabase } from '../supabaseClient';
 
 interface LoginPageProps {
   onLogin: () => void;
@@ -9,12 +10,37 @@ interface LoginPageProps {
 export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulating login
-    if (email && password) {
-      onLogin();
+    setErrorMessage('');
+    setLoading(true);
+
+    try {
+      // Chamar RPC seguro no Supabase para verificar e-mail e senha de 6 dígitos
+      const { data, error } = await supabase.rpc('verify_member_login', {
+        email_input: email.trim(),
+        password_input: password.trim()
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      if (data && data.length > 0) {
+        // Armazenar sessão no localStorage
+        localStorage.setItem('member_session', JSON.stringify(data[0]));
+        onLogin();
+      } else {
+        setErrorMessage('E-mail ou senha provisória de 6 dígitos incorretos.');
+      }
+    } catch (err: any) {
+      console.error('Erro de login no Supabase:', err);
+      setErrorMessage('Erro de conexão ou e-mail/senha incorretos. Tente novamente.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -39,6 +65,17 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {errorMessage && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-2xl flex items-center gap-3 text-sm font-bold"
+            >
+              <AlertCircle size={20} className="shrink-0 text-red-500" />
+              <span>{errorMessage}</span>
+            </motion.div>
+          )}
+
           <div className="space-y-2">
             <label className="text-sm font-bold text-slate-700 ml-2">E-mail</label>
             <div className="relative">
@@ -50,6 +87,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 placeholder="seu@email.com"
                 className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-medium"
                 required
+                disabled={loading}
               />
             </div>
           </div>
@@ -62,18 +100,32 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder="Sua senha de 6 dígitos"
                 className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-medium"
                 required
+                disabled={loading}
               />
             </div>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-brand-green text-white py-4 rounded-2xl font-black text-lg shadow-xl shadow-green-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-4"
+            disabled={loading}
+            className="w-full bg-brand-green text-white py-4 rounded-2xl font-black text-lg shadow-xl shadow-green-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-4 disabled:opacity-75 disabled:pointer-events-none"
           >
-            ACESSAR AGORA <ArrowRight size={20} />
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+                VALIDANDO ACESSO...
+              </span>
+            ) : (
+              <>
+                ACESSAR AGORA <ArrowRight size={20} />
+              </>
+            )}
           </button>
         </form>
 
@@ -90,3 +142,4 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
     </div>
   );
 };
+

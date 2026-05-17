@@ -1175,7 +1175,9 @@ export default function App() {
   useAntiClone(); // Ativa as proteções no site inteiro
 
   const [showUpsell, setShowUpsell] = React.useState(false);
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
+    return !!localStorage.getItem('member_session');
+  });
   const navigate = useNavigate();
 
   // Expor função globalmente para simplificar o acesso de componentes profundos
@@ -1190,9 +1192,11 @@ export default function App() {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('member_session');
     setIsLoggedIn(false);
     navigate('/login');
   };
+
 
   return (
     <>

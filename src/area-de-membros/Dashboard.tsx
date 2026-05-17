@@ -16,7 +16,8 @@ import {
   FileText,
   X,
   Eye,
-  Menu
+  Menu,
+  Lock
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Certificate } from './Certificate';
@@ -84,9 +85,59 @@ interface DashboardProps {
 
 export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => {
   const navigate = useNavigate();
-  const [userName] = useState('Leonardo Pinheiro');
-  const [userPlan] = useState('premium'); // 'free' or 'premium'
-  const [completedItems, setCompletedItems] = useState<string[]>([]);
+  const [userName] = useState(() => {
+    const session = localStorage.getItem('member_session');
+    if (session) {
+      try {
+        const parsed = JSON.parse(session);
+        return parsed.name || 'Professor(a)';
+      } catch (e) {
+        return 'Professor(a)';
+      }
+    }
+    return 'Professor(a)';
+  });
+  const [userPlan] = useState(() => {
+    const session = localStorage.getItem('member_session');
+    if (session) {
+      try {
+        const parsed = JSON.parse(session);
+        return parsed.plan || 'basic';
+      } catch (e) {
+        return 'basic';
+      }
+    }
+    return 'basic';
+  });
+
+  const [completedItems, setCompletedItems] = useState<string[]>(() => {
+    const session = localStorage.getItem('member_session');
+    if (session) {
+      try {
+        const parsed = JSON.parse(session);
+        const email = parsed.email || 'guest';
+        const saved = localStorage.getItem(`progress_${email}`);
+        return saved ? JSON.parse(saved) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+    return [];
+  });
+
+  React.useEffect(() => {
+    const session = localStorage.getItem('member_session');
+    if (session) {
+      try {
+        const parsed = JSON.parse(session);
+        const email = parsed.email || 'guest';
+        localStorage.setItem(`progress_${email}`, JSON.stringify(completedItems));
+      } catch (e) {
+        console.error("Erro ao salvar progresso:", e);
+      }
+    }
+  }, [completedItems]);
+
   const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
   const [selectedPdf, setSelectedPdf] = useState({ title: '', url: '' });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -102,8 +153,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
   const tabs = [
     { id: 'principal', label: 'Principal', icon: LayoutDashboard },
     { id: 'dinamicas', label: 'Dinâmicas', icon: BookOpen },
-    { id: 'certificado', label: 'Certificado', icon: Award },
-    { id: 'bonus', label: 'Bônus', icon: Gift },
+    { id: 'certificado', label: 'Certificado', icon: Award, locked: userPlan === 'basic' },
+    { id: 'bonus', label: 'Bônus', icon: Gift, locked: userPlan === 'basic' },
     { id: 'adicionais', label: 'Adicionais', icon: PlusCircle },
   ];
 
@@ -344,6 +395,41 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
           </div>
         );
       case 'certificado':
+        if (userPlan === 'basic') {
+          return (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-6 bg-white rounded-[2.5rem] shadow-xl border border-slate-100 max-w-3xl mx-auto overflow-hidden relative">
+              <div className="absolute top-[-10%] left-[-10%] w-[30%] h-[30%] bg-brand-yellow/5 rounded-full blur-3xl pointer-events-none"></div>
+              <div className="w-20 h-20 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mb-6 relative">
+                <Award size={40} />
+                <div className="absolute -top-1 -right-1 bg-brand-yellow text-slate-900 w-8 h-8 rounded-full flex items-center justify-center border-4 border-white">
+                  <Lock size={14} />
+                </div>
+              </div>
+              <h2 className="text-3xl font-black text-slate-900 mb-4 uppercase">Certificado Bloqueado</h2>
+              <p className="text-slate-500 font-bold max-w-lg mb-8 leading-relaxed">
+                O certificado de conclusão de 40 horas é exclusivo para alunos do <span className="text-brand-green font-black">Plano Premium</span>. 
+                No seu plano <span className="text-brand-blue font-black">Básico</span>, esta opção não está disponível.
+              </p>
+              
+              <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 mb-10 max-w-md w-full flex items-center gap-4 text-left">
+                <div className="w-12 h-12 bg-brand-yellow/10 rounded-xl flex items-center justify-center text-brand-yellow shrink-0">
+                  <Star size={24} />
+                </div>
+                <div>
+                  <h4 className="font-black text-slate-900 text-sm">Por que o Premium?</h4>
+                  <p className="text-slate-500 text-xs font-bold leading-normal mt-1">O Certificado Premium é reconhecido nacionalmente, válido para progressão de carreira e atividades complementares.</p>
+                </div>
+              </div>
+              
+              <button
+                onClick={() => window.open('https://wa.me/553799056159?text=Quero+fazer+o+upgrade+para+o+Plano+Premium+para+liberar+o+certificado', '_blank')}
+                className="bg-brand-green text-white px-10 py-4 rounded-2xl font-black shadow-lg shadow-green-500/20 hover:scale-[1.03] transition-all flex items-center gap-2"
+              >
+                FAZER UPGRADE PARA PREMIUM <Zap size={18} className="text-brand-yellow" />
+              </button>
+            </div>
+          );
+        }
         if (userPlan === 'premium' && progressPercent < 100) {
           return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-6">
@@ -391,6 +477,50 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
         }
         return <Certificate userName={userName} completionDate={new Date().toLocaleDateString('pt-BR')} />;
       case 'bonus':
+        if (userPlan === 'basic') {
+          return (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-6 bg-white rounded-[2.5rem] shadow-xl border border-slate-100 max-w-3xl mx-auto overflow-hidden relative">
+              <div className="absolute top-[-10%] left-[-10%] w-[30%] h-[30%] bg-brand-green/5 rounded-full blur-3xl pointer-events-none"></div>
+              <div className="w-20 h-20 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mb-6 relative">
+                <Gift size={40} />
+                <div className="absolute -top-1 -right-1 bg-brand-yellow text-slate-900 w-8 h-8 rounded-full flex items-center justify-center border-4 border-white">
+                  <Lock size={14} />
+                </div>
+              </div>
+              <h2 className="text-3xl font-black text-slate-900 mb-4 uppercase">Bônus Exclusivos Bloqueados</h2>
+              <p className="text-slate-500 font-bold max-w-lg mb-8 leading-relaxed">
+                Ops! O seu plano atual é o <span className="text-brand-blue font-black">Básico</span>, que inclui apenas a dinâmica principal. 
+                Faça o upgrade agora para o <span className="text-brand-green font-black">Plano Premium</span> e libere imediatamente:
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left max-w-xl mb-10">
+                <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center gap-3">
+                  <CheckCircle2 size={18} className="text-brand-green shrink-0" />
+                  <span className="text-xs font-bold text-slate-700">100 Avaliações Alinhadas à BNCC</span>
+                </div>
+                <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center gap-3">
+                  <CheckCircle2 size={18} className="text-brand-green shrink-0" />
+                  <span className="text-xs font-bold text-slate-700">Guia Professor de Elite (Metodologias)</span>
+                </div>
+                <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center gap-3">
+                  <CheckCircle2 size={18} className="text-brand-green shrink-0" />
+                  <span className="text-xs font-bold text-slate-700">Planos de Aula BNCC Completos</span>
+                </div>
+                <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center gap-3">
+                  <CheckCircle2 size={18} className="text-brand-green shrink-0" />
+                  <span className="text-xs font-bold text-slate-700">Certificado de 40h Incluso</span>
+                </div>
+              </div>
+              
+              <button
+                onClick={() => window.open('https://wa.me/553799056159?text=Quero+fazer+o+upgrade+para+o+Plano+Premium', '_blank')}
+                className="bg-brand-green text-white px-10 py-4 rounded-2xl font-black shadow-lg shadow-green-500/20 hover:scale-[1.03] transition-all flex items-center gap-2"
+              >
+                FAZER UPGRADE PARA PREMIUM <Zap size={18} className="text-brand-yellow" />
+              </button>
+            </div>
+          );
+        }
         return (
           <div className="space-y-8">
             <div>
@@ -548,13 +678,18 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
             <button
               key={tab.id}
               onClick={() => navigate(`/${tab.id}`)}
-              className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-black text-sm uppercase tracking-wider transition-all ${activeTab === tab.id
+              className={`w-full flex items-center justify-between px-6 py-4 rounded-2xl font-black text-sm uppercase tracking-wider transition-all ${activeTab === tab.id
                   ? 'bg-brand-blue text-white shadow-lg shadow-blue-500/20 translate-x-2'
                   : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
                 }`}
             >
-              <tab.icon size={20} />
-              {tab.label}
+              <div className="flex items-center gap-4">
+                <tab.icon size={20} />
+                <span>{tab.label}</span>
+              </div>
+              {tab.locked && (
+                <Lock size={16} className="text-slate-400 shrink-0" />
+              )}
             </button>
           ))}
         </nav>
@@ -617,7 +752,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
                               : 'bg-white text-slate-600 border border-slate-100'
                             }`}
                         >
-                          {tab.label}
+                          <span className="flex items-center gap-2">
+                            {tab.label}
+                            {tab.locked && <Lock size={12} className="text-slate-400" />}
+                          </span>
                           <tab.icon size={14} />
                         </motion.button>
                       ))}
