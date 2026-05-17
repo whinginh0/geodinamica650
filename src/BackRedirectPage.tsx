@@ -114,7 +114,7 @@ export const BackRedirectPage = () => {
             <CTAButton 
               primary={false} 
               className="w-full bg-slate-900 text-white hover:bg-slate-800"
-              onClick={() => window.location.href = 'https://pay.hotmart.com/L93086705O?off=b4r3j7g5&checkoutMode=10'}
+              onClick={() => window.location.href = 'https://ggcheckout.app/checkout/v5/WBAu8C4BpW2gCcwyc1Kx'}
             >
               QUERO O BÁSICO
             </CTAButton>
@@ -180,7 +180,7 @@ export const BackRedirectPage = () => {
 
             <CTAButton 
               className="w-full flex items-center justify-center gap-2 animate-bounce"
-              onClick={() => window.location.href = 'https://pay.hotmart.com/L93086705O?off=f7f893j4&checkoutMode=10'}
+              onClick={() => window.location.href = 'https://ggcheckout.app/checkout/v5/AxvtCYnUuU6DCqhaJqjS'}
             >
               QUERO O PREMIUM <ArrowRight size={20} />
             </CTAButton>

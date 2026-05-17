@@ -133,13 +133,13 @@ const UpsellPopup = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void
 
           <CTAButton
             className="w-full py-4 text-lg md:text-xl shadow-xl shadow-green-500/30 mb-4 flex items-center justify-center gap-2 animate-bounce"
-            onClick={() => window.location.href = 'https://pay.hotmart.com/L93086705O?off=f7f893j4&checkoutMode=10'}
+            onClick={() => window.location.href = 'https://ggcheckout.app/checkout/v5/E12J9a4icrD2hfnZdHqR'}
           >
             QUERO O PREMIUM <ArrowRight size={20} />
           </CTAButton>
 
           <button
-            onClick={onClose}
+            onClick={() => window.location.href = 'https://ggcheckout.app/checkout/v5/XyTY2BmVuFBdAsbTFQSK'}
             className="text-slate-400 font-bold text-[10px] md:text-xs underline underline-offset-4 hover:text-slate-600 transition-colors"
           >
             Não, quero continuar no Plano Básico.
@@ -814,7 +814,10 @@ const Pricing = () => (
               <img src="https://i.ibb.co/p6fDZsTv/LOGO.png" alt="Garantia e Segurança" className="h-16 md:h-20 object-contain opacity-100" />
             </div>
 
-            <CTAButton className="w-full py-5 uppercase tracking-widest text-xs md:text-sm flex items-center justify-center gap-2 shadow-2xl shadow-blue-500/40">
+            <CTAButton 
+              className="w-full py-5 uppercase tracking-widest text-xs md:text-sm flex items-center justify-center gap-2 shadow-2xl shadow-blue-500/40"
+              onClick={() => window.location.href = 'https://ggcheckout.app/checkout/v5/fcUxroaI27hBPCowg2KW'}
+            >
               QUERO O PREMIUM <ArrowRight size={16} />
             </CTAButton>
           </div>
