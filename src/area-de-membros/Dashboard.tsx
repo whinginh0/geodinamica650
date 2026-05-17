@@ -297,25 +297,65 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
                 </button>
               </div>
 
-              <div className="bg-white p-8 rounded-[2rem] shadow-xl border border-slate-100 flex flex-col items-center text-center">
+              <div className="bg-white p-8 rounded-[2rem] shadow-xl border border-slate-100 flex flex-col items-center text-center relative overflow-hidden">
+                {userPlan === 'basic' && (
+                  <div className="absolute top-4 right-4 text-slate-400">
+                    <Lock size={18} />
+                  </div>
+                )}
                 <div className="w-16 h-16 bg-yellow-50 text-brand-yellow rounded-2xl flex items-center justify-center mb-6">
                   <Award size={32} />
                 </div>
                 <h3 className="text-xl font-black mb-2">Certificado</h3>
-                <p className="text-slate-500 font-medium text-sm mb-6">Emita seu certificado de conclusão de 40 horas.</p>
-                <button onClick={() => navigate('/certificado')} className="w-full bg-slate-50 text-slate-900 py-3 rounded-xl font-black hover:bg-slate-100 transition-all flex items-center justify-center gap-2">
-                  EMITIR AGORA <ChevronRight size={18} />
+                <p className="text-slate-500 font-medium text-sm mb-6">Emita seu certificado de conclusão.</p>
+                <button 
+                  onClick={() => {
+                    if (userPlan === 'basic') return;
+                    navigate('/certificado');
+                  }} 
+                  className={`w-full py-3 rounded-xl font-black transition-all flex items-center justify-center gap-2 ${
+                    userPlan === 'basic' 
+                      ? 'bg-slate-100 text-slate-400 cursor-not-allowed' 
+                      : 'bg-slate-50 text-slate-900 hover:bg-slate-100'
+                  }`}
+                  disabled={userPlan === 'basic'}
+                >
+                  {userPlan === 'basic' ? (
+                    <>BLOQUEADO <Lock size={16} /></>
+                  ) : (
+                    <>EMITIR AGORA <ChevronRight size={18} /></>
+                  )}
                 </button>
               </div>
 
-              <div className="bg-white p-8 rounded-[2rem] shadow-xl border border-slate-100 flex flex-col items-center text-center">
+              <div className="bg-white p-8 rounded-[2rem] shadow-xl border border-slate-100 flex flex-col items-center text-center relative overflow-hidden">
+                {userPlan === 'basic' && (
+                  <div className="absolute top-4 right-4 text-slate-400">
+                    <Lock size={18} />
+                  </div>
+                )}
                 <div className="w-16 h-16 bg-green-50 text-brand-green rounded-2xl flex items-center justify-center mb-6">
                   <Gift size={32} />
                 </div>
                 <h3 className="text-xl font-black mb-2">Seus Bônus</h3>
                 <p className="text-slate-500 font-medium text-sm mb-6">Materiais extras, guias e planejamentos anuais.</p>
-                <button onClick={() => navigate('/bonus')} className="w-full bg-slate-50 text-slate-900 py-3 rounded-xl font-black hover:bg-slate-100 transition-all flex items-center justify-center gap-2">
-                  VER BÔNUS <ChevronRight size={18} />
+                <button 
+                  onClick={() => {
+                    if (userPlan === 'basic') return;
+                    navigate('/bonus');
+                  }} 
+                  className={`w-full py-3 rounded-xl font-black transition-all flex items-center justify-center gap-2 ${
+                    userPlan === 'basic' 
+                      ? 'bg-slate-100 text-slate-400 cursor-not-allowed' 
+                      : 'bg-slate-50 text-slate-900 hover:bg-slate-100'
+                  }`}
+                  disabled={userPlan === 'basic'}
+                >
+                  {userPlan === 'basic' ? (
+                    <>BLOQUEADO <Lock size={16} /></>
+                  ) : (
+                    <>VER BÔNUS <ChevronRight size={18} /></>
+                  )}
                 </button>
               </div>
             </div>
@@ -407,7 +447,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
               </div>
               <h2 className="text-3xl font-black text-slate-900 mb-4 uppercase">Certificado Bloqueado</h2>
               <p className="text-slate-500 font-bold max-w-lg mb-8 leading-relaxed">
-                O certificado de conclusão de 40 horas é exclusivo para alunos do <span className="text-brand-green font-black">Plano Premium</span>. 
+                O certificado de conclusão é exclusivo para alunos do <span className="text-brand-green font-black">Plano Premium</span>. 
                 No seu plano <span className="text-brand-blue font-black">Básico</span>, esta opção não está disponível.
               </p>
               
@@ -446,7 +486,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
 
               <h2 className="text-3xl font-black text-slate-900 mb-4">Certificado Bloqueado</h2>
               <p className="text-slate-500 font-medium max-w-md mx-auto mb-10">
-                Você precisa concluir todos os conteúdos de Dinâmicas e Bônus para emitir seu certificado de 40 horas.
+                Você precisa concluir todos os conteúdos de Dinâmicas e Bônus para emitir seu certificado de conclusão.
               </p>
 
               <div className="w-full max-w-md bg-white p-8 rounded-[2rem] shadow-xl border border-slate-100">
@@ -508,7 +548,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
                 </div>
                 <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center gap-3">
                   <CheckCircle2 size={18} className="text-brand-green shrink-0" />
-                  <span className="text-xs font-bold text-slate-700">Certificado de 40h Incluso</span>
+                  <span className="text-xs font-bold text-slate-700">Certificado de Conclusão Incluso</span>
                 </div>
               </div>
               
@@ -677,11 +717,18 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
           {tabs.map((tab) => (
             <button
               key={tab.id}
-              onClick={() => navigate(`/${tab.id}`)}
-              className={`w-full flex items-center justify-between px-6 py-4 rounded-2xl font-black text-sm uppercase tracking-wider transition-all ${activeTab === tab.id
-                  ? 'bg-brand-blue text-white shadow-lg shadow-blue-500/20 translate-x-2'
-                  : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
-                }`}
+              onClick={() => {
+                if (tab.locked) return;
+                navigate(`/${tab.id}`);
+              }}
+              className={`w-full flex items-center justify-between px-6 py-4 rounded-2xl font-black text-sm uppercase tracking-wider transition-all ${
+                tab.locked
+                  ? 'text-slate-400 cursor-not-allowed'
+                  : activeTab === tab.id
+                    ? 'bg-brand-blue text-white shadow-lg shadow-blue-500/20 translate-x-2'
+                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+              }`}
+              disabled={tab.locked}
             >
               <div className="flex items-center gap-4">
                 <tab.icon size={20} />
@@ -744,13 +791,18 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout, activeTab }) => 
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: idx * 0.05 }}
                           onClick={() => {
+                            if (tab.locked) return;
                             navigate(`/${tab.id}`);
                             setIsMobileMenuOpen(false);
                           }}
-                          className={`w-full flex items-center justify-between gap-4 px-5 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl transition-all ${activeTab === tab.id
-                              ? 'bg-brand-blue text-white'
-                              : 'bg-white text-slate-600 border border-slate-100'
-                            }`}
+                          className={`w-full flex items-center justify-between gap-4 px-5 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl transition-all ${
+                            tab.locked
+                              ? 'bg-white text-slate-600 border border-slate-100 cursor-not-allowed'
+                              : activeTab === tab.id
+                                ? 'bg-brand-blue text-white'
+                                : 'bg-white text-slate-600 border border-slate-100'
+                          }`}
+                          disabled={tab.locked}
                         >
                           <span className="flex items-center gap-2">
                             {tab.label}

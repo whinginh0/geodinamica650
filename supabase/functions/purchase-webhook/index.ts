@@ -108,6 +108,8 @@ Deno.serve(async (req: Request) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
     const resendApiKey = Deno.env.get("RESEND_API_KEY") ?? "";
 
+    console.log(`Debug de Segredos: URL=${supabaseUrl ? "OK" : "Vazia"}, Key=${supabaseServiceKey ? "OK" : "Vazia"}, ResendApiKey=${resendApiKey ? `OK (tam: ${resendApiKey.length}, prefixo: ${resendApiKey.substring(0, 5)})` : "Vazia"}`);
+
     if (!supabaseUrl || !supabaseServiceKey) {
       console.error("Variáveis de ambiente do Supabase não configuradas no Edge Function.");
       return new Response(JSON.stringify({ error: "Erro interno do servidor" }), {
@@ -186,8 +188,8 @@ Deno.serve(async (req: Request) => {
         : "Seu acesso ao GeoDinâmicas 650+ chegou! 🚀";
 
       const planDetail = isPremium 
-        ? `Parab&#233;ns pela sua aquisi&#231;&#227;o do <strong style="font-weight:700;color:#063d20;">GeoDin&#226;micas 650+ Plano PREMIUM</strong>!<br>Seu acesso com <strong style="font-weight:700;">todas as Din&#226;micas BNCC</strong>, B&#244;nus Exclusivos e <strong style="font-weight:700;">Certificado de 40h</strong> j&#225; est&#225; liberado e pronto para uso!` 
-        : `Parab&#233;ns pela sua aquisi&#231;&#227;o do <strong style="font-weight:700;color:#063d20;">GeoDin&#226;micas 650+ Plano B&#193;SICO</strong>!<br>Seu acesso &#224;s <strong style="font-weight:700;">Din&#226;micas BNCC principais</strong> j&#225; est&#225; liberado e pronto para uso!`;
+        ? `Parab&#233;ns pela sua aquisi&#231;&#227;o do <strong style="font-weight:700;color:#063d20;">GeoDin&#226;micas 650+ Plano PREMIUM</strong>!<br>Seu acesso com <strong style="font-weight:700;">todas as Din&#226;micas BNCC</strong>, B&#244;nus Exclusivos e <strong style="font-weight:700;">Certificado de Conclus&#227;o</strong> j&#225; est&#225; liberado e pronto para uso!` 
+        : `Parab&#233;ns pela sua aquisi&#231;&#227;o do <strong style="font-weight:700;color:#063d20;">GeoDin&#226;micas 650+ Plano B&#193;SICO</strong>!<br>Seu acesso j&#225; est&#225; liberado e pronto para uso!`;
 
       // Template de E-mail Responsivo Premium Oficial
       const emailHtml = `
@@ -265,12 +267,12 @@ Deno.serve(async (req: Request) => {
   <!-- ▌TÍTULO -->
   <tr>
     <td align="center" class="pad" style="padding:42px 44px 0 44px;background-color:#ffffff;">
-      <!-- Ícone foguete SVG inline -->
+      <!-- Ícone foguete nativo -->
       <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" style="margin:0 auto 18px auto;">
         <tr>
-          <td align="center" style="background-color:#e8f5e9;border-radius:50%;width:64px;height:64px;padding:0;">
-            <div style="width:64px;height:64px;line-height:64px;text-align:center;">
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTMyIDZDMjAgNiAxMiAxOCAxMiAzMmMwIDYgMiAxMiA2IDE2bDQtOGMtMi0yLTMtNS0zLTggMC04IDYtMTQgMTMtMTRzMTMgNiAxMyAxNGMwIDMtMSA2LTMgOGw0IDhjNC00IDYtMTAgNi0xNkM1MiAxOCA0NCA2IDMyIDZ6IiBmaWxsPSIjMWE3YTQ1Ii8+PHBhdGggZD0iTTI0IDQ2bDItNiA2IDMgNi0zIDIgNi02IDQtMTAtNHoiIGZpbGw9IiNmNWI4MDAiLz48cGF0aCBkPSJNMjkgMjZhMyAzIDAgMSAwIDYgMCAzIDMgMCAwIDAtNiAweiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==" alt="Acesso" width="36" height="36" style="display:inline-block;vertical-align:middle;margin-top:14px;" />
+          <td align="center" style="background-color:#e8f5e9;border-radius:50%;width:64px;height:64px;padding:0;vertical-align:middle;">
+            <div style="width:64px;height:64px;line-height:64px;text-align:center;font-size:32px;">
+              🚀
             </div>
           </td>
         </tr>
@@ -309,15 +311,14 @@ Deno.serve(async (req: Request) => {
   <tr>
     <td class="pad" style="padding:28px 44px 0 44px;">
 
-      <!-- Cabeçalho com ícone SVG inline (cadeado) -->
+      <!-- Cabeçalho com ícone cadeado -->
       <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#063d20;border-radius:18px 18px 0 0;">
         <tr>
           <td style="padding:18px 26px;">
             <table role="presentation" cellspacing="0" cellpadding="0" border="0">
               <tr>
-                <td valign="middle" style="padding-right:12px;">
-                  <!-- ícone cadeado SVG inline como data URI base64 -->
-                  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZjViODAwIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHJlY3QgeD0iMyIgeT0iMTEiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxMSIgcng9IjIiIHJ5PSIyIi8+PHBhdGggZD0iTTcgMTFWN2E1IDUgMCAwIDEgMTAgMHY0Ii8+PC9zdmc+" alt="Dados" width="22" height="22" style="display:block;" />
+                <td valign="middle" style="padding-right:12px;font-size:20px;line-height:22px;">
+                  🔐
                 </td>
                 <td valign="middle">
                   <span style="font-family:Poppins,Arial,sans-serif;font-size:12px;font-weight:700;color:#f5b800;letter-spacing:3px;text-transform:uppercase;">Seus Dados de Acesso</span>
@@ -350,8 +351,7 @@ Deno.serve(async (req: Request) => {
         <!-- ROW: Email — agora em retângulo destacado -->
         <tr>
           <td width="36%" style="background-color:#f7fcf9;padding:22px 22px 22px 26px;border-right:2px solid #b2dfcb;border-bottom:2px solid #b2dfcb;vertical-align:middle;">
-            <!-- ícone envelope SVG inline -->
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMWE3YTQ1IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTQgNGgxNmMxLjEgMCAyIC45IDIgMnYxMmMwIDEuMS0uOSAyLTIgMkg0Yy0xLjEgMC0yLS45LTItMlY2YzAtMS4xLjktMiAyLTJ6Ii8+PHBvbHlsaW5lIHBvaW50cz0iMjIsNiAxMiwxMyAyLDYiLz48L3N2Zz4=" alt="Email" width="20" height="20" style="display:block;margin-bottom:7px;" />
+            <div style="font-size:18px;line-height:20px;margin-bottom:7px;">✉️</div>
             <span style="font-family:Poppins,Arial,sans-serif;font-size:11px;font-weight:700;color:#5a8a6a;text-transform:uppercase;letter-spacing:1.5px;">E-mail</span>
           </td>
           <td style="background-color:#ffffff;padding:18px 22px;border-bottom:2px solid #b2dfcb;vertical-align:middle;">
@@ -372,8 +372,7 @@ Deno.serve(async (req: Request) => {
             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
               <tr>
                 <td width="36%" style="padding:26px 22px 26px 26px;border-right:2px solid #1a7a45;vertical-align:middle;">
-                  <!-- ícone chave SVG inline -->
-                  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOGRjZmE4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTIxIDJsLTIgMm0tNy41IDcuNWE0LjUgNC41IDAgMSAxLTYuMzY0IDYuMzY0IDQuNSA0LjUgMCAwIDEgNi4zNjQtNi4zNjR6TTIxIDJsLTUgNS41TTE1IDhsMy41IDMuNUwyMSAyIi8+PC9zdmc+" alt="Senha" width="24" height="24" style="display:block;margin-bottom:8px;" />
+                  <div style="font-size:22px;line-height:24px;margin-bottom:8px;">🔑</div>
                   <span style="font-family:Poppins,Arial,sans-serif;font-size:11px;font-weight:700;color:#8dcfa8;text-transform:uppercase;letter-spacing:1.5px;">Senha Gerada</span>
                   <br>
                   <span style="font-family:Poppins,Arial,sans-serif;font-size:11px;font-weight:400;color:#5aaa7a;">Acesso inicial</span>
@@ -403,11 +402,11 @@ Deno.serve(async (req: Request) => {
       <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#f0faf4;border-radius:18px;border:1px solid #b2dfcb;">
         <tr>
           <td style="padding:26px 28px;">
-            <!-- Título com ícone lista SVG inline -->
+            <!-- Título com ícone lista -->
             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom:20px;">
               <tr>
-                <td valign="middle" style="padding-right:10px;" width="32">
-                  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDYzZDIwIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGxpbmUgeDE9IjgiIHkxPSI2IiB4Mj0iMjEiIHkyPSI2Ii8+PGxpbmUgeDE9IjgiIHkxPSIxMiIgeDI9IjIxIiB5Mj0iMTIiLz4PGxpbmUgeDE9IjgiIHkxPSIxOCIgeDI9IjIxIiB5Mj0iMTgiLz48bGluZSB4MT0iIiB5MT0iNiIgeDI9IjMuMDEiIHkyPSI2Ii8+PGxpbmUgeDE9IjMiIHkxPSIxMiIgeDI9IjMuMDEiIHkyPSIxMiIvPjxsaW5lIHgxPSIzIiB5MT0iMTgiIHgyPSIzLjAxIiB5Mj0iMTgiLz48L3N2Zz4=" alt="Passos" width="22" height="22" style="display:block;" />
+                <td valign="middle" style="padding-right:10px;font-size:20px;line-height:22px;" width="32">
+                  📋
                 </td>
                 <td valign="middle">
                   <span style="font-family:Poppins,Arial,sans-serif;font-size:12px;font-weight:700;color:#063d20;text-transform:uppercase;letter-spacing:2px;">Como Acessar em 3 Passos</span>
@@ -480,12 +479,11 @@ Deno.serve(async (req: Request) => {
             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
               <tr>
                 <td width="32" valign="top" style="padding-top:2px;">
-                  <!-- ícone alerta SVG inline -->
-                  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZjViODAwIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTEwLjI5IDMuODZMMiAyMmgxOS45OUwxMy43MSAzLjg2YTIgMiAwIDAgMC0zLjQyIDB6Ii8+PGxpbmUgeDE9IjEyIiB5MT0iOSIgeDI9IjEyIiB5Mj0iMTMiLz48bGluZSB4MT0iMTIiIHkxPSIxNyIgeDI9IjEyLjAxIiB5Mj0iMTciLz48L3N2Zz4=" alt="Atencao" width="22" height="22" style="display:block;" />
+                  <div style="font-size:20px;line-height:22px;">⚠️</div>
                 </td>
                 <td style="padding-left:12px;font-family:Poppins,Arial,sans-serif;font-size:13px;font-weight:400;color:#7a5800;line-height:1.7;">
                   <strong style="font-weight:700;">Aten&#231;&#227;o:</strong> Guarde seus dados de acesso em local seguro. Recomendamos acessar o painel agora mesmo para iniciar o download dos seus recursos pedag&#243;gicos.
-                  ${!isPremium ? "<br><br><strong style=\"font-weight:700;\">Dica:</strong> Se você desejar ter acesso aos Bônus Exclusivos e ao Certificado de 40h, você poderá realizar o upgrade para o Plano Premium diretamente no painel de membros!" : ""}
+                  ${!isPremium ? "<br><br><strong style=\"font-weight:700;\">Dica:</strong> Se você desejar ter acesso aos Bônus Exclusivos e ao Certificado de Conclusão, você poderá realizar o upgrade para o Plano Premium diretamente no painel de membros!" : ""}
                 </td>
               </tr>
             </table>
@@ -519,8 +517,7 @@ Deno.serve(async (req: Request) => {
       <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#063d20;border-radius:20px;">
         <tr>
           <td align="center" style="padding:30px 28px;">
-            <!-- ícone WhatsApp SVG inline -->
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTI0IDRDMTIuOTUgNCA0IDEyLjk1IDQgMjRjMCAzLjc1Ljk3IDcuMjggMi42NyAxMC4zN0w0IDQ0bDkuODctMi42QzE2LjgzIDQyLjk3IDIwLjMzIDQ0IDI0IDQ0YzExLjA1IDAgMjAtOC45NSAyMC0yMFMzNS4wNSA0IDI0IDR6IiBmaWxsPSIjMjVEMzY2Ii8+PHBhdGggZD0iTTM1LjIgMjkuMmMtLjUxLS4yNi0zLTEuNDgtMy40Ny0xLjY0LS40Ni0uMTctLjgtLjy6LTEuMTMuMjYtLjMzLjUzLTEuMjkgMS42NC0xLjU4IDEuOTgtLjI5LjM0LS51OC4zOC0xLjA5LjEzLTMtMS41LTQuOTctMi42OC02Ljk1LTYuMDgtLjUzLS45MS4zNS0uODUgMS4xNy0yLjUuMTItLjMzLjA2LS42Mi0uMDctLjg4LS4xMy0uMjYtMS4xMy0yLjcyLTEuNTUtMy43Mi0uNDEtLjk3LS44My0uODQtMS4xMy0uODVoLS45N2MtLjMzIDAtLjg3LjI1LTEuMzMuNjItLjQ2LjUxLTEuNzQgMS43LTEuNzQgNC4xNSAwIDIuNDQgMS43OCA0LjggMi4wMyA1LjEzLjI1LjMzIDMuNSA1LjM1IDguNDggNy41IDMuMTYgMS4zNiA0LjQgMS40NiA1Ljk3IDEuMjMuOTYtLjE0IDMtMS4yMiAzLjQyLTIuNCwuNDItMS4xNy40Mi0yLjE4LjMtMi40eiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==" alt="WhatsApp" width="44" height="44" style="display:block;margin:0 auto 14px auto;" />
+            <img src="https://i.ibb.co/pBRJXzqT/image.png" alt="WhatsApp" width="44" height="44" style="display:block;margin:0 auto 14px auto;" />
             <p style="margin:0 0 4px 0;font-family:Poppins,Arial,sans-serif;font-size:11px;font-weight:700;color:#8dcfa8;text-transform:uppercase;letter-spacing:3px;">Suporte e D&#250;vidas</p>
             <p style="margin:0 0 18px 0;font-family:Poppins,Arial,sans-serif;font-size:14px;font-weight:400;color:#c8e6c9;line-height:1.7;">
               Fale com nossa equipe via WhatsApp &#8212; respondemos rapidamente!

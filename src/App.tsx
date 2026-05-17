@@ -1198,6 +1198,14 @@ export default function App() {
   };
 
 
+  const sessionStr = localStorage.getItem('member_session');
+  let userPlan = 'basic';
+  if (sessionStr) {
+    try {
+      userPlan = JSON.parse(sessionStr).plan || 'basic';
+    } catch (_) {}
+  }
+
   return (
     <>
       <CustomCursor />
@@ -1236,10 +1244,14 @@ export default function App() {
           isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="dinamicas" /> : <Navigate to="/login" />
         } />
         <Route path="/certificado" element={
-          isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="certificado" /> : <Navigate to="/login" />
+          isLoggedIn ? (
+            userPlan === 'basic' ? <Navigate to="/principal" /> : <Dashboard onLogout={handleLogout} activeTab="certificado" />
+          ) : <Navigate to="/login" />
         } />
         <Route path="/bonus" element={
-          isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="bonus" /> : <Navigate to="/login" />
+          isLoggedIn ? (
+            userPlan === 'basic' ? <Navigate to="/principal" /> : <Dashboard onLogout={handleLogout} activeTab="bonus" />
+          ) : <Navigate to="/login" />
         } />
         <Route path="/adicionais" element={
           isLoggedIn ? <Dashboard onLogout={handleLogout} activeTab="adicionais" /> : <Navigate to="/login" />
